@@ -23,6 +23,7 @@ public class NavesController {
 	@PostMapping(path="data",
 			consumes= MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Naves> createData(@RequestBody Naves newData){
-	// Pendiente de implementar
+	public void createData(@RequestBody Naves newData) {
+		// Pendiente de implementar
+	}
 }

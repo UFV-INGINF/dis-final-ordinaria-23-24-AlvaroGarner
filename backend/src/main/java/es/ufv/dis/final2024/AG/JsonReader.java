@@ -17,14 +17,14 @@ import java.util.Map;
 
 public class JsonReader {
 	//método de lectura de Json
-	public ArrayList<NavesRaritas> readJsonFile(String fichero){
+	public ArrayList<Naves> readJsonFile(String fichero){
 		try {
 			//lee el fichero que le pasemos y lo carga en un reader
 			Reader reader = Files.newBufferedReader(Paths.get(fichero)); // asignamos un reader
 			// convierte el array JSON a un arraylist, ya que son varios
 
-			//ArrayList contiene información según clase NavesRaritas, que será leída en json
-			ArrayList<NavesRaritas> data = new Gson().fromJson(reader, new TypeToken<ArrayList<NavesRaritas>>() {}.getType()); //utilizamos Gson
+			//ArrayList contiene información según clase Naves, que será leída en json
+			ArrayList<Naves> data = new Gson().fromJson(reader, new TypeToken<ArrayList<Naves>>() {}.getType()); //utilizamos Gson
 			reader.close();// cierra el reader
 			return data;
 
@@ -35,7 +35,7 @@ public class JsonReader {
 	}
 
 	// Función para escribir JSON
-	public boolean writeJsonFile(String fichero, ArrayList<NavesRaritas> data){
+	public boolean writeJsonFile(String fichero, ArrayList<Naves> data){
 		try{
 			Writer writer = Files.newBufferedWriter(Paths.get(fichero));
 			writer.write(new Gson().toJson(data)); // Escribimos el fichero con el arraylist correspondiente
