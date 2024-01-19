@@ -1,8 +1,7 @@
 package es.ufv.dis.final2024.AG;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
 public class DataHandling {
 	// Función para escribir en json nueva información
 	// Función para encontrar la info por nombre
