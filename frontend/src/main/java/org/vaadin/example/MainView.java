@@ -1,5 +1,7 @@
 package org.vaadin.example;
 
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -13,7 +15,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-
+import com.vaadin.flow.component.button.Button;
 
 /**
  * A sample Vaadin view class.
@@ -64,7 +66,28 @@ public class MainView extends VerticalLayout {
         grid.addColumn(Naves::getStarship_class).setHeader("Starship class").setAutoWidth(true);
         grid.addColumn(Naves::getPilots).setHeader("Pilots").setAutoWidth(true);
         grid.addColumn(Naves::getFilms).setHeader("Films").setAutoWidth(true);
+        // Columna con botones para eliminar
+        grid.addComponentColumn(eliminar -> {
+            HorizontalLayout botones = new HorizontalLayout(); // Layout contenedor de los botones
+            Button botonEliminar = new Button(VaadinIcon.PLUS.create()); // Icono de "+" para cada botón
+            botonEliminar.addThemeVariants(ButtonVariant.LUMO_SUCCESS); // Color rojo para la papelera/texto
 
+            botonEliminar.addClickListener(clickEvent -> { // Botón eliminar
+                String IDelegida = grid.asSingleSelect().getValue().getName(); // Name del elemento seleccionado
+                try {
+                    // Implementar
+                    grid.setItems(service.getDataList()); // Leer el archivo editado de nuevo
+                }
+                catch (Exception ex){
+                    System.out.println(ex.getMessage());
+                }
+            });
+
+            botones.add(botonEliminar);
+            return botones;
+        });
+        
+        
         try {
             grid.setItems(service.getDataList()); // Imprimir de nuevo la lista
         } catch (URISyntaxException | IOException | InterruptedException e) {
