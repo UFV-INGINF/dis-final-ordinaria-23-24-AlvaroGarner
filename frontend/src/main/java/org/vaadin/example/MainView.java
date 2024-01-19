@@ -2,14 +2,18 @@ package org.vaadin.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.notification.Notification;
+
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
+
 import com.vaadin.flow.router.Route;
+
+import com.vaadin.flow.component.grid.Grid;
+
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 
 /**
  * A sample Vaadin view class.
@@ -37,28 +41,38 @@ public class MainView extends VerticalLayout {
      */
     public MainView(@Autowired GreetService service) {
 
-        // Use TextField for standard text input
-        TextField textField = new TextField("Your name");
-        textField.addClassName("bordered");
+        // Layout principal
+        final VerticalLayout layoutPrincipal = new VerticalLayout();
 
-        // Button click listeners can be defined as lambda expressions
-        Button button = new Button("Say hello", e -> {
-            add(new Paragraph(service.greet(textField.getValue())));
-        });
+        // Layouts de las tabs del layout principal
+        final HorizontalLayout layoutDatosGenerales = new HorizontalLayout();
+        final HorizontalLayout layoutAgruparMsCode = new HorizontalLayout();
 
-        // Theme variants give you predefined extra styles for components.
-        // Example: Primary button has a more prominent look.
-        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        // Layout Datos Generales
 
-        // You can specify keyboard shortcuts for buttons.
-        // Example: Pressing enter in this view clicks the Button.
-        button.addClickShortcut(Key.ENTER);
 
-        // Use custom CSS classes to apply styling. This is defined in
-        // styles.css.
-        addClassName("centered-content");
+        // Creamos la tabla con sus respectivas columnas
+        Grid<Naves> grid = new Grid<>(Naves.class, false);
+        // Columnas con encabezado y tamaño automático
+        grid.addColumn(Naves::getName).setHeader("Name").setAutoWidth(true);
+        grid.addColumn(Naves::getModel).setHeader("Model").setAutoWidth(true);
+        grid.addColumn(Naves::getCost_in_credits).setHeader("CiC").setAutoWidth(true);
+        grid.addColumn(Naves::getCrew).setHeader("Crew").setAutoWidth(true);
+        grid.addColumn(Naves::getCargo_capacity).setHeader("Cargo_Capacity").setAutoWidth(true);
+        grid.addColumn(Naves::getConsumables).setHeader("Consumables").setAutoWidth(true);
+        grid.addColumn(Naves::getHyperdrive_rating).setHeader("Hyperdrive rating").setAutoWidth(true);
+        grid.addColumn(Naves::getStarship_class).setHeader("Starship class").setAutoWidth(true);
+        grid.addColumn(Naves::getPilots).setHeader("Pilots").setAutoWidth(true);
+        grid.addColumn(Naves::getFilms).setHeader("Films").setAutoWidth(true);
 
-        add(textField, button);
+        try {
+            grid.setItems(service.getDataList()); // Imprimir de nuevo la lista
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        grid.setHeight("85vh");
+        layoutPrincipal.add(grid);
+        add(layoutPrincipal);
     }
 
 }
